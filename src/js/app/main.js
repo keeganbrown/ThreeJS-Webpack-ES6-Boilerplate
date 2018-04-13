@@ -1,6 +1,5 @@
 // Global imports -
 import * as THREE from 'three';
-import TWEEN from 'tween.js';
 
 // Local imports -
 // Components
@@ -11,15 +10,11 @@ import Controls from './components/controls';
 
 // Helpers
 import Geometry from './helpers/geometry';
-import Stats from './helpers/stats';
-
-// Model
-import Texture from './model/texture';
-import Model from './model/model';
+// import Stats from './helpers/stats';
 
 // Managers
-import Interaction from './managers/interaction';
-import DatGUI from './managers/datGUI';
+// import Interaction from './managers/interaction';
+// import DatGUI from './managers/datGUI';
 
 // data
 import Config from './../data/config';
@@ -48,7 +43,7 @@ export default class Main {
 
     // Components instantiations
     this.camera = new Camera(this.renderer.threeRenderer);
-    this.controls = new Controls(this.camera.threeCamera, container);
+    // this.controls = new Controls(this.camera.threeCamera, container);
     this.light = new Light(this.scene);
 
     // Create and place lights in scene
@@ -56,74 +51,52 @@ export default class Main {
     lights.forEach((light) => this.light.place(light));
 
     // Create and place geo in scene
-    this.geometry = new Geometry(this.scene);
-    this.geometry.make('plane')(150, 150, 10, 10);
-    this.geometry.place([0, -20, 0], [Math.PI / 2, 0, 0]);
+    this.geometry = new Geometry(this.scene, {dynamic: true});
+    this.geometry.make('plane')(1500, 1500, 100, 100);
+    this.geometry.place([0, -500, 0], [0, 0, 0], 0xffffff);
 
-    // Set up rStats if dev environment
-    if(Config.isDev && Config.isShowingStats) {
-      this.stats = new Stats(this.renderer);
-      this.stats.setUp();
-    }
-
-    // Instantiate texture class
-    this.texture = new Texture();
-
-    // Start loading the textures and then go on to load the model after the texture Promises have resolved
-    this.texture.load().then(() => {
-      this.manager = new THREE.LoadingManager();
-
-      // Textures loaded, load model
-      this.model = new Model(this.scene, this.manager, this.texture.textures);
-      this.model.load();
-
-      // onProgress callback
-      this.manager.onProgress = (item, loaded, total) => {
-        console.log(`${item}: ${loaded} ${total}`);
-      };
-
-      // All loaders done now
-      this.manager.onLoad = () => {
-        // Set up interaction manager with the app now that the model is finished loading
-        new Interaction(this.renderer.threeRenderer, this.scene, this.camera.threeCamera, this.controls.threeControls);
-
-        // Add dat.GUI controls if dev
-        if(Config.isDev) {
-          new DatGUI(this, this.model.obj);
-        }
-
-        // Everything is now fully loaded
-        Config.isLoaded = true;
-        this.container.querySelector('#loading').style.display = 'none';
-      };
-    });
+    this.addRockyGeometry(this.geometry.geo);
+    this.container.querySelector('#loading').style.display = 'none';
 
     // Start render which does not wait for model fully loaded
     this.render();
+    console.log(this.camera);
+    console.log(this.light);
+  }
+
+  randZeroBased(dist) {
+    return Math.floor((Math.random() * dist) - (dist/2));
+  }
+
+  clamp(val, dist = 30) {
+    return Math.min(Math.max(val, -dist), dist);
+  }
+
+  addRockyGeometry(geo) {
+    let shift = 8;
+    let shiftz = 5;
+    let lastz = 0;
+    let lastx = 0;
+    let lasty = 0;
+    geo.vertices.forEach((v) => {
+      let newx = this.randZeroBased(shift);
+      let newy = this.randZeroBased(shift);
+      v.z = this.clamp(this.randZeroBased(shiftz) + lastz);
+      v.x = v.x + this.clamp(this.randZeroBased(shift) + lastx);
+      v.y = v.y + this.clamp(this.randZeroBased(shift) + lasty);
+      lastz = v.z;
+      lastx = newx;
+      lasty = newy;
+    })
   }
 
   render() {
-    // Render rStats if Dev
-    if(Config.isDev && Config.isShowingStats) {
-      Stats.start();
-    }
+    this.camera.threeCamera.position.y = -(window.scrollY / 2) + Config.camera.posY;
+    this.light.pointLight.position.y = -(window.scrollY / 2) + Config.pointLight.y;
+    //this.camera.position.y = window.scrollY;
 
     // Call render function and pass in created scene and camera
     this.renderer.render(this.scene, this.camera.threeCamera);
-
-    // rStats has finished determining render call now
-    if(Config.isDev && Config.isShowingStats) {
-      Stats.end();
-    }
-
-    // Delta time is sometimes needed for certain updates
-    //const delta = this.clock.getDelta();
-
-    // Call any vendor or module frame updates here
-    TWEEN.update();
-    this.controls.threeControls.update();
-
-    // RAF
     requestAnimationFrame(this.render.bind(this)); // Bind the main class instead of window object
   }
 }

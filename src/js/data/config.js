@@ -1,9 +1,7 @@
-import TWEEN from 'tween.js';
-
 // This object contains the state of the app
 export default {
   isDev: false,
-  isShowingStats: true,
+  isShowingStats: false,
   isLoaded: false,
   isTweening: false,
   isRotating: true,
@@ -11,7 +9,7 @@ export default {
   isMouseOver: false,
   maxAnisotropy: 1,
   dpr: 1,
-  easing: TWEEN.Easing.Quadratic.InOut,
+  // easing: TWEEN.Easing.Quadratic.InOut,
   duration: 500,
   model: {
     path: './assets/models/Teapot.json',
@@ -39,14 +37,14 @@ export default {
   camera: {
     fov: 40,
     near: 2,
-    far: 1000,
+    far: 500,
     aspect: 1,
     posX: 0,
-    posY: 30,
-    posZ: 40
+    posY: 0,
+    posZ: 300
   },
   controls: {
-    autoRotate: true,
+    autoRotate: false,
     autoRotateSpeed: -0.5,
     rotateSpeed: 0.5,
     zoomSpeed: 0.8,
@@ -58,28 +56,16 @@ export default {
     maxAzimuthAngle: Infinity,
     enableDamping: true,
     dampingFactor: 0.5,
-    enableZoom: true,
+    enableZoom: false,
     target: {
       x: 0,
       y: 0,
       z: 0
     }
   },
-  ambientLight: {
-    enabled: false,
-    color: 0x141414
-  },
-  directionalLight: {
-    enabled: true,
-    color: 0xf0f0f0,
-    intensity: 0.4,
-    x: -75,
-    y: 280,
-    z: 150
-  },
   shadow: {
     enabled: true,
-    helperEnabled: true,
+    helperEnabled: false,
     bias: 0,
     mapWidth: 2048,
     mapHeight: 2048,
@@ -90,20 +76,32 @@ export default {
     bottom: -100,
     left: -100
   },
+  ambientLight: {
+    enabled: false,
+    color: 0x5487c7
+  },
+  directionalLight: {
+    enabled: true,
+    color: 0x5487c7,
+    intensity: .4,
+    x: 0,
+    y: -580,
+    z: 350
+  },
   pointLight: {
     enabled: true,
-    color: 0xffffff,
-    intensity: 0.34,
-    distance: 115,
+    color: 0x5487c7,
+    intensity: 5.94,
+    distance: 355,
     x: 0,
-    y: 0,
-    z: 0
+    y: 100,
+    z: 150
   },
   hemiLight: {
-    enabled: true,
-    color: 0xc8c8c8,
+    enabled: false,
+    color: 0x5487c7,
     groundColor: 0xffffff,
-    intensity: 0.55,
+    intensity: 90.55,
     x: 0,
     y: 0,
     z: 0
