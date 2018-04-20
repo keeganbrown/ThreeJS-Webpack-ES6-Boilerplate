@@ -16,7 +16,7 @@ export default class Geometry {
     if(type === 'plane') {
       return (width, height, widthSegments = 1, heightSegments = 1) => {
         this.geo = new THREE.PlaneGeometry(width, height, widthSegments, heightSegments);
-        for (let prop in this.options) {
+        for (const prop in this.options) {
           this.geo[prop] = this.options[prop];
         }
       };
@@ -31,6 +31,8 @@ export default class Geometry {
 
   place(position, rotation, color = 0xeeeeee) {
     const material = new Material(color).standard;
+    //material.roughness = 0.0;
+    //material.metalness = 0.0;
     const mesh = new THREE.Mesh(this.geo, material);
 
     // Use ES6 spread to set position and rotation from passed in array
@@ -42,5 +44,7 @@ export default class Geometry {
     }
 
     this.scene.add(mesh);
+
+    this.mesh = mesh;
   }
 }

@@ -1,3 +1,5 @@
+/* global BrowserStats, glStats, threeStats, rStats  */
+
 // Local vars for rStats
 let rS, bS, glS, tS;
 
@@ -31,7 +33,7 @@ export default class Stats {
       ],
       plugins: [bS, tS, glS]
     });
-  };
+  }
 
   static start() {
     rS('frame').start();
@@ -41,7 +43,7 @@ export default class Stats {
     rS('FPS').frame();
 
     rS('render').start();
-  };
+  }
 
   static end() {
     rS('render').end(); // render finished
@@ -51,5 +53,5 @@ export default class Stats {
     rS('rStats').start();
     rS().update();
     rS('rStats').end();
-  };
+  }
 }

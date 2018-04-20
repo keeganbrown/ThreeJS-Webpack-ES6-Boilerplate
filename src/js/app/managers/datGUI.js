@@ -1,3 +1,5 @@
+/* global dat  */
+
 import Config from '../../data/config';
 
 // Manages all dat.GUI interactions

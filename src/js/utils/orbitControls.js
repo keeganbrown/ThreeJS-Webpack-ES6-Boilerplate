@@ -1,4 +1,6 @@
-module.exports = function(THREE) {
+/*global console */
+
+export default function(THREE) {
   var MOUSE = THREE.MOUSE
   if (!MOUSE)
     MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2 };
@@ -10,7 +12,6 @@ module.exports = function(THREE) {
    * @author WestLangley / http://github.com/WestLangley
    * @author erich666 / http://erichaines.com
    */
-  /*global THREE, console */
 
   function OrbitConstraint ( object ) {
 
@@ -294,7 +295,7 @@ module.exports = function(THREE) {
 
     }();
 
-  };
+  }
 
 
   // This set of controls performs orbiting, dollying (zooming), and panning. It maintains
@@ -809,7 +810,7 @@ module.exports = function(THREE) {
     // force an update at start
     this.update();
 
-  };
+  }
 
   OrbitControls.prototype = Object.create( THREE.EventDispatcher.prototype );
   OrbitControls.prototype.constructor = OrbitControls;

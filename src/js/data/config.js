@@ -11,16 +11,6 @@ export default {
   dpr: 1,
   // easing: TWEEN.Easing.Quadratic.InOut,
   duration: 500,
-  model: {
-    path: './assets/models/Teapot.json',
-    scale: 20
-  },
-  texture: {
-    path: './assets/textures/',
-    imageFiles: [
-      {name: 'UV', image: 'UV_Grid_Sm.jpg'}
-    ]
-  },
   mesh: {
     enableHelper: false,
     wireframe: false,
@@ -77,33 +67,33 @@ export default {
     left: -100
   },
   ambientLight: {
-    enabled: false,
+    enabled: true,
     color: 0x5487c7
   },
   directionalLight: {
     enabled: true,
-    color: 0x5487c7,
-    intensity: .4,
+    color: 0xffffff,
+    intensity: 0.4,
     x: 0,
-    y: -580,
-    z: 350
+    y: -100,
+    z: 850
   },
   pointLight: {
     enabled: true,
-    color: 0x5487c7,
-    intensity: 5.94,
-    distance: 355,
+    color: 0xb9cfea,
+    intensity: 1.94,
+    distance: 300,
     x: 0,
     y: 100,
     z: 150
   },
   hemiLight: {
-    enabled: false,
-    color: 0x5487c7,
-    groundColor: 0xffffff,
-    intensity: 90.55,
+    enabled: true,
+    color: 0xb9cfea,
+    groundColor: 0xb9cfea,
+    intensity: 0.55,
     x: 0,
     y: 0,
-    z: 0
+    z: 100
   }
 };

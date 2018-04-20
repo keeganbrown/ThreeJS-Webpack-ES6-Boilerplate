@@ -6,15 +6,10 @@ import * as THREE from 'three';
 import Renderer from './components/renderer';
 import Camera from './components/camera';
 import Light from './components/light';
-import Controls from './components/controls';
+// import Controls from './components/controls';
 
 // Helpers
 import Geometry from './helpers/geometry';
-// import Stats from './helpers/stats';
-
-// Managers
-// import Interaction from './managers/interaction';
-// import DatGUI from './managers/datGUI';
 
 // data
 import Config from './../data/config';
@@ -53,15 +48,21 @@ export default class Main {
     // Create and place geo in scene
     this.geometry = new Geometry(this.scene, {dynamic: true});
     this.geometry.make('plane')(1500, 1500, 100, 100);
-    this.geometry.place([0, -500, 0], [0, 0, 0], 0xffffff);
+    this.geometry.place([0, -500, 0], [0, 0, 0], 0x5487c7);
 
     this.addRockyGeometry(this.geometry.geo);
-    this.container.querySelector('#loading').style.display = 'none';
 
     // Start render which does not wait for model fully loaded
     this.render();
-    console.log(this.camera);
-    console.log(this.light);
+    //this.addBloomPass();
+    //this.addSAOPass();
+    this.mouseX = 500;
+    this.mouseY = 500;
+
+    window.addEventListener('mousemove', (event) => {
+      this.mouseX = event.clientX - (this.renderer.threeRenderer.domElement.width / 2);
+      this.mouseY = event.clientY - (this.renderer.threeRenderer.domElement.height / 2);
+    });
   }
 
   randZeroBased(dist) {
@@ -72,18 +73,57 @@ export default class Main {
     return Math.min(Math.max(val, -dist), dist);
   }
 
+  // addBloomPass() {
+  //   this.composer = new THREE.EffectComposer(this.renderer.threeRenderer);
+  //   this.composer.addPass(new THREE.RenderPass(this.scene, this.camera.threeCamera));
+
+  //   var bloomPass = new THREE.BloomBlendPass(
+  //     1.0, // the amount of blur
+  //     1.9, // interpolation(0.0 ~ 1.0) original image and bloomed image
+  //     new THREE.Vector2(1024, 1024) // image resolution
+  //   );
+  //   bloomPass.renderToScreen = true;
+  //   this.composer.addPass(bloomPass);
+  // }
+
+  // addSAOPass() {
+  //   this.composer = new THREE.EffectComposer(this.renderer.threeRenderer);
+  //   this.composer.addPass(new THREE.RenderPass(this.scene, this.camera.threeCamera));
+
+  //   var saoPass = new THREE.SAOPass( this.scene, this.camera.threeCamera, false, true );
+  //   var defaultParams = {
+  //     output: 0,
+  //     saoBias: 0.5,
+  //     saoIntensity: 0.25,
+  //     saoScale: 1,
+  //     saoKernelRadius: 1000,
+  //     saoMinResolution: 0,
+  //     saoBlur: true,
+  //     saoBlurRadius: 12,
+  //     saoBlurStdDev: 6,
+  //     saoBlurDepthCutoff: 0.1
+  //   }
+  //   saoPass.renderToScreen = true;
+  //   saoPass.params = {
+  //     ...saoPass.params,
+  //     ...defaultParams
+  //   }
+
+  //   this.composer.addPass( saoPass );
+  // }
+
   addRockyGeometry(geo) {
-    let shift = 8;
-    let shiftz = 5;
+    const shiftxy = 10;
+    const shiftz = 50;
     let lastz = 0;
     let lastx = 0;
     let lasty = 0;
     geo.vertices.forEach((v) => {
-      let newx = this.randZeroBased(shift);
-      let newy = this.randZeroBased(shift);
-      v.z = this.clamp(this.randZeroBased(shiftz) + lastz);
-      v.x = v.x + this.clamp(this.randZeroBased(shift) + lastx);
-      v.y = v.y + this.clamp(this.randZeroBased(shift) + lasty);
+      const newx = this.randZeroBased(shiftxy);
+      const newy = this.randZeroBased(shiftxy);
+      v.z = this.clamp(this.randZeroBased(shiftz) + lastz) - (Math.abs(v.x) / 2);
+      v.x = v.x + this.clamp(this.randZeroBased(shiftxy) + lastx);
+      v.y = v.y + this.clamp(this.randZeroBased(shiftxy) + lasty);
       lastz = v.z;
       lastx = newx;
       lasty = newy;
@@ -91,12 +131,18 @@ export default class Main {
   }
 
   render() {
-    this.camera.threeCamera.position.y = -(window.scrollY / 2) + Config.camera.posY;
-    this.light.pointLight.position.y = -(window.scrollY / 2) + Config.pointLight.y;
+
+    this.camera.threeCamera.position.y = -(window.scrollY / 8) + Config.camera.posY;
+    this.light.pointLight.position.y = -(window.scrollY / 7) + Config.pointLight.y - (this.mouseY / 10);
+    this.light.pointLight.position.x = Config.pointLight.x + (this.mouseX / 10);
+    this.light.hemiLight.position.y = -(window.scrollY / 7) + Config.pointLight.y - (this.mouseY / 10);
+
     //this.camera.position.y = window.scrollY;
 
     // Call render function and pass in created scene and camera
+
     this.renderer.render(this.scene, this.camera.threeCamera);
+    //this.composer && this.composer.render();
     requestAnimationFrame(this.render.bind(this)); // Bind the main class instead of window object
   }
 }

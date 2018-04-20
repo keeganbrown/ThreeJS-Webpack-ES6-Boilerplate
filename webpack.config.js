@@ -22,6 +22,9 @@ var env = 'dev',
       new webpack.DefinePlugin({
         __ENV__: JSON.stringify(env),
         ___BUILD_TIME___: time
+      }),
+      new webpack.ProvidePlugin({
+        THREE: 'three'
       })
     ];
 
