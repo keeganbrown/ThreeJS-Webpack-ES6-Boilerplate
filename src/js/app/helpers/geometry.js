@@ -31,7 +31,7 @@ export default class Geometry {
 
   place(position, rotation, color = 0xeeeeee) {
     const material = new Material(color).standard;
-    //material.roughness = 0.0;
+    material.roughness = 0.4;
     //material.metalness = 0.0;
     const mesh = new THREE.Mesh(this.geo, material);
 

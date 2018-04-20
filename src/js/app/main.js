@@ -47,8 +47,9 @@ export default class Main {
 
     // Create and place geo in scene
     this.geometry = new Geometry(this.scene, {dynamic: true});
-    this.geometry.make('plane')(1500, 1500, 100, 100);
-    this.geometry.place([0, -500, 0], [0, 0, 0], 0x5487c7);
+    this.geometry.make('plane')(1500, 1500, 70, 90);
+    // this.geometry.place([0, -500, 0], [0, 0, 0], 0x5487c7);
+    this.geometry.place([0, -500, 0], [0, 0, 0], 0x283e5a);
 
     this.addRockyGeometry(this.geometry.geo);
 
@@ -114,17 +115,17 @@ export default class Main {
 
   addRockyGeometry(geo) {
     const shiftxy = 10;
-    const shiftz = 50;
-    let lastz = 0;
+    const shiftz = 10;
+    // let lastz = 0;
     let lastx = 0;
     let lasty = 0;
     geo.vertices.forEach((v) => {
       const newx = this.randZeroBased(shiftxy);
       const newy = this.randZeroBased(shiftxy);
-      v.z = this.clamp(this.randZeroBased(shiftz) + lastz) - (Math.abs(v.x) / 2);
+      v.z = this.clamp(this.randZeroBased(shiftz)) - (Math.abs(v.x) / 2);
       v.x = v.x + this.clamp(this.randZeroBased(shiftxy) + lastx);
       v.y = v.y + this.clamp(this.randZeroBased(shiftxy) + lasty);
-      lastz = v.z;
+      // lastz = v.z;
       lastx = newx;
       lasty = newy;
     })
@@ -133,9 +134,9 @@ export default class Main {
   render() {
 
     this.camera.threeCamera.position.y = -(window.scrollY / 8) + Config.camera.posY;
-    this.light.pointLight.position.y = -(window.scrollY / 7) + Config.pointLight.y - (this.mouseY / 10);
+    this.light.pointLight.position.y = -(window.scrollY / 7) + Config.pointLight.y - (this.mouseY / 5);
     this.light.pointLight.position.x = Config.pointLight.x + (this.mouseX / 10);
-    this.light.hemiLight.position.y = -(window.scrollY / 7) + Config.pointLight.y - (this.mouseY / 10);
+    this.light.hemiLight.position.y = -(window.scrollY / 7) + Config.pointLight.y - (this.mouseY / 5);
 
     //this.camera.position.y = window.scrollY;
 

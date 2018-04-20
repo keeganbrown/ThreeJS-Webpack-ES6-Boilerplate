@@ -80,20 +80,22 @@ export default {
   },
   pointLight: {
     enabled: true,
-    color: 0xb9cfea,
-    intensity: 1.94,
-    distance: 300,
+    color: 0x3cc0f0,
+    // color: 0xb9cfea,
+    // color: 0xffffff,
+    intensity: 2.94,
+    distance: 400,
     x: 0,
     y: 100,
     z: 150
   },
   hemiLight: {
     enabled: true,
-    color: 0xb9cfea,
-    groundColor: 0xb9cfea,
-    intensity: 0.55,
+    color: 0x3cc0f0,
+    groundColor: 0x9999999,
+    intensity: 1.95,
     x: 0,
     y: 0,
-    z: 100
+    z: 500
   }
 };
