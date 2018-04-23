@@ -91,8 +91,8 @@ export default {
   },
   hemiLight: {
     enabled: true,
-    color: 0x3cc0f0,
-    groundColor: 0x9999999,
+    color: 0xffffff,
+    groundColor: 0xb9cfea,
     intensity: 1.95,
     x: 0,
     y: 0,

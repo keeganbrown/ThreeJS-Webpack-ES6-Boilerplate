@@ -57,7 +57,7 @@ module.exports = {
     // the url to the output directory resolved relative to the HTML page
     publicPath: 'assets/js',
     // the filename template for entry chunks
-    filename: 'app.js'
+    filename: '3d-bg.js'
   },
 
   mode: mode,

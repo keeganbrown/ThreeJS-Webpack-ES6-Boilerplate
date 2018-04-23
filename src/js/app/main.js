@@ -6,7 +6,6 @@ import * as THREE from 'three';
 import Renderer from './components/renderer';
 import Camera from './components/camera';
 import Light from './components/light';
-// import Controls from './components/controls';
 
 // Helpers
 import Geometry from './helpers/geometry';
@@ -27,11 +26,6 @@ export default class Main {
     // Main scene creation
     this.scene = new THREE.Scene();
     this.scene.fog = new THREE.FogExp2(Config.fog.color, Config.fog.near);
-
-    // Get Device Pixel Ratio first for retina
-    if(window.devicePixelRatio) {
-      Config.dpr = window.devicePixelRatio;
-    }
 
     // Main renderer constructor
     this.renderer = new Renderer(this.scene, container);
